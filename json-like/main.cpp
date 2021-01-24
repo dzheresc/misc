@@ -75,26 +75,17 @@ void assert(bool expression, const string& error){
 }
 
 int main() {
-    auto p_doc_all_true = unique_ptr<doc_t>(new doc_t
-    {
-        {"a", true},
-        {"b", new doc_t { {"c", true} }},
-    });
+    auto make_doc = [](bool a, bool c){
+      return unique_ptr<doc_t>(new doc_t
+      {
+        {"a", a},
+        {"b", new doc_t { {"c", c} }},
+      });
+    };
 
-    auto p_doc_all_false = unique_ptr<doc_t>(new doc_t
-    {
-            {"a", false},
-            {"b", new doc_t { {"c", false} }},
-    });
-    auto p_doc_mix = unique_ptr<doc_t>(new doc_t
-    {
-            {"a", true},
-            {"b", new doc_t { {"c", false} }},
-    });
-
-    assert(p_doc_all_true->is_valid(), "all true");
-    assert(p_doc_all_false->is_valid(), "all false");
-    assert(!p_doc_mix->is_valid(), "disallow mix");
+    assert(make_doc(true,true)->is_valid(), "all true");
+    assert(make_doc(false,false)->is_valid(), "all false");
+    assert(make_doc(true,false)->is_valid() == false, "disallow mix");
 
     cout << "ok\n";
     return 0;
