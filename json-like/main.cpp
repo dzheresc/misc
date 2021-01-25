@@ -41,8 +41,9 @@ class doc_t {
     return true;
   }
 
-public:
   vector<kv_t> data;
+
+public:
 
   doc_t(initializer_list<kv_t>&& list):data(list) {}
 
