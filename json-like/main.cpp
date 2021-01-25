@@ -24,29 +24,10 @@ public:
 
 class doc_t {
 
-    bool is_valid_opt(optional<bool>& expected, doc_t* doc){
+    bool is_valid(int& flags, doc_t* doc){
         for(auto kv : doc->data){
             if (holds_alternative<doc_t*>(kv.val)){
-                if (!is_valid_opt(expected, get<doc_t*>(kv.val)))
-                    return false;
-            }
-            else { // holds_alternative<bool>
-                if (expected.has_value()){
-                    if(expected.value() != get<bool>(kv.val))
-                        return false;
-                }
-                else {
-                    expected = get<bool>(kv.val);
-                }
-            }
-        }
-        return true;
-    }
-
-    bool is_valid_bits(int& flags, doc_t* doc){
-        for(auto kv : doc->data){
-            if (holds_alternative<doc_t*>(kv.val)){
-                if(!is_valid_bits(flags, get<doc_t*>(kv.val))){
+                if(!is_valid(flags, get<doc_t*>(kv.val))){
                     return false;
                 }
             }
@@ -77,16 +58,9 @@ public:
         }
     }
 
-    /*
-    bool is_valid_old(){
-        optional<bool> expected;
-        return is_valid_opt(expected, this);
-    }
-    */
-
     bool is_valid(){
         int flags{0};
-        return is_valid_bits(flags, this);
+        return is_valid(flags, this);
     }
 };
 
