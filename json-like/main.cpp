@@ -45,9 +45,17 @@ class doc_t {
 
 public:
     vector<kv_t> data;
+
     doc_t(initializer_list<kv_t> list){
         for (auto kv : list) {
             data.push_back(kv);
+        }
+    }
+
+    ~doc_t(){
+        for (auto kv : data) {
+	   if (holds_alternative<doc_t*>(kv.val))
+               delete get<doc_t*>(kv.val);
         }
     }
 
