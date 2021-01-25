@@ -24,10 +24,10 @@ public:
 
 class doc_t {
 
-    bool is_valid(optional<bool>& expected, doc_t* doc){
+    bool is_valid_opt(optional<bool>& expected, doc_t* doc){
         for(auto kv : doc->data){
             if (holds_alternative<doc_t*>(kv.val)){
-                if (!is_valid(expected, get<doc_t*>(kv.val)))
+                if (!is_valid_opt(expected, get<doc_t*>(kv.val)))
                     return false;
             }
             else { // holds_alternative<bool>
@@ -38,6 +38,24 @@ class doc_t {
                 else {
                     expected = get<bool>(kv.val);
                 }
+            }
+        }
+        return true;
+    }
+
+    bool is_valid_bits(int& flags, doc_t* doc){
+        for(auto kv : doc->data){
+            if (holds_alternative<doc_t*>(kv.val)){
+                if(!is_valid_bits(flags, get<doc_t*>(kv.val))){
+                    return false;
+                }
+            }
+            else { // holds_alternative<bool>
+                // bit0 -> false, bit4 -> true
+                // 0x11 -> error
+                flags |= get<bool>(kv.val) ? 0x10 : 0x01;
+                if (flags == 0x11)
+                    return false;
             }
         }
         return true;
@@ -59,9 +77,16 @@ public:
         }
     }
 
-    bool is_valid(){
+    /*
+    bool is_valid_old(){
         optional<bool> expected;
-        return is_valid(expected, this);
+        return is_valid_opt(expected, this);
+    }
+    */
+
+    bool is_valid(){
+        int flags{0};
+        return is_valid_bits(flags, this);
     }
 };
 
@@ -76,6 +101,7 @@ public:
         return error.c_str();
     }
 };
+
 void assert(bool expression, const string& error){
     if (!expression) {
         throw assertion_exception(error);
