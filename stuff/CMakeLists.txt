@@ -3,7 +3,7 @@ project(stuff)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(stuff main.cpp tnf_tree.cpp uniq.cpp tnf_tree.h)
+add_executable(stuff main.cpp tnf_tree.cpp uniq.cpp tnf_tree.h var_visit.cpp)
 
 #set(SOURCE
 #    ${SOURCE}
