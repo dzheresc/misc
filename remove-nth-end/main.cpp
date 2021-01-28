@@ -49,6 +49,32 @@ public:
     }
 };
 
+class SwapSolution {
+public:
+    ListNode* swap(ListNode* head, int k) {
+        auto p = head;
+        for(int i=1;i < k;i++)
+            p = p->next;
+
+        auto left = p;
+        p = p->next;
+
+        auto right = head;
+        while(p){
+            p = p->next;
+            right = right->next;
+        }
+
+        if(right != nullptr && left != right) {
+            auto tmp = left->val;
+            left->val = right->val;
+            right->val = tmp;
+        }
+
+        return head;
+    }
+};
+
 void print(ListNode* head){
     std::cout << '[';
     while(head){
@@ -59,11 +85,15 @@ void print(ListNode* head){
 }
 
 int main() {
-    Solution sol;
-    print(sol.removeNthFromEnd(new ListNode({1,2,3,4}),1));
-    print(sol.removeNthFromEnd(new ListNode({1,2,3,4}),2));
-    print(sol.removeNthFromEnd(new ListNode({1,2,3,4}),3));
-    print(sol.removeNthFromEnd(new ListNode({1,2,3,4}),4));
-    print(sol.removeNthFromEnd(new ListNode({1}),1));
+//    Solution sol;
+//    print(sol.removeNthFromEnd(new ListNode({1,2,3,4}),1));
+//    print(sol.removeNthFromEnd(new ListNode({1,2,3,4}),2));
+//    print(sol.removeNthFromEnd(new ListNode({1,2,3,4}),3));
+//    print(sol.removeNthFromEnd(new ListNode({1,2,3,4}),4));
+//    print(sol.removeNthFromEnd(new ListNode({1}),1));
+    SwapSolution sol;
+    print(sol.swap(new ListNode({1,2,3,4}),1));
+    print(sol.swap(new ListNode({1,2}),1));
+    print(sol.swap(new ListNode({1}),1));
     return 0;
 }
