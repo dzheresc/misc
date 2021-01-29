@@ -27,7 +27,7 @@ long long number(const vector<int>& v){
  * 1 + 1 + 1 = 111
  *
  * carry values = 0, 1, 11
- * encoded as two bits --> 0, 1, 3 (b'00, b'01, b'11)
+ *
  *
  */
 const int CARRY_0 = 0;
