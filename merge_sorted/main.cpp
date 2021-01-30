@@ -19,7 +19,8 @@ public:
         int n = lists.size();
         while (n > 1) {
             for (int i = 0; i < n / 2; ++i) {
-                lists[i] = merge(lists[2 * i], lists[2 * i + 1]);
+                //lists[i] = merge(lists[2 * i], lists[2 * i + 1]);
+                lists[i] = mergeTwoLists(lists[2 * i], lists[2 * i + 1]);
             }
             if (n % 2 == 1) {
                 lists[n / 2] = lists[n - 1];
@@ -42,6 +43,33 @@ public:
             return l2;
         }
     }
+
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        ListNode head{-1000,nullptr};
+        ListNode *p = &head;
+
+        while(l1 && l2){
+            if (l1->val < l2->val){
+                p->next = l1;
+                l1 = l1->next;
+            } else { // l1->val >= l2->val
+                p->next = l2;
+                l2 = l2->next;
+            }
+
+            p = p->next;
+        }
+
+        if (l1){
+            p->next = l1;
+        }
+        if (l2){
+            p->next = l2;
+        }
+
+        return head.next;
+    }
+
 };
 
 ListNode* make_list(initializer_list<int> data){
