@@ -130,6 +130,25 @@ public:
         l2 = sort(l2);
         return merge(l1, l2);
     }
+
+    ListNode* insertion_sort(ListNode* head) {
+        ListNode result{numeric_limits<int>::min(), nullptr};
+        while (head){
+            auto current = head;
+            head = head->next;
+            current->next = nullptr;
+
+            auto sorted = &result;
+            while (sorted->next && sorted->next->val <= current->val){
+                sorted = sorted->next;
+            }
+            current->next = sorted->next;
+            sorted->next = current;
+        }
+        return result.next;
+    }
+
+
 };
 
 ListNode* make_list(initializer_list<int> data){
@@ -152,5 +171,8 @@ int main() {
     print("merged", result);
     auto sorted = Solution().sort(make_list({7,4,5,2,1,-1,3,1,7,1}));
     print("sorted", sorted);
+
+    auto insertion = Solution().insertion_sort(make_list({7,4,5,2,1,-1,3,1,7,1}));
+    print("insert", insertion);
     return 0;
 }
